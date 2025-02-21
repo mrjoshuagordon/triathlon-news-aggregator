@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triathlon News Aggregator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <!-- Add logo above the title -->
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Triathlon News Logo">
+      <h1>Triathlon News</h1>
+      <p>Stay up-to-date with the latest in triathlon news, races, training tips, and gear reviews.</p>
+      
+      <!-- Date Filter Dropdown -->
+      <form method="GET" action="/">
+        <label for="date_filter">Filter by Date:</label>
+        <select id="date_filter" name="date_filter" onchange="this.form.submit()">
+          <option value="all" {% if request.args.get('date_filter') == 'all' %}selected{% endif %}>All Articles</option>
+          <option value="last_3" {% if request.args.get('date_filter') == 'last_3' %}selected{% endif %}>Last 3 Days</option>
+          <option value="last_60" {% if request.args.get('date_filter') == 'last_60' %}selected{% endif %}>Last 60 Days</option>
+        </select>
+      </form>
+    </header>
+
+    <div class="articles-list">
+      {% for article in articles %}
+        <div class="article-card {{ article['card_class'] }}">
+          <h2><a href="{{ article['link'] }}" target="_blank">{{ article['title'] }}</a></h2>
+          <p>{{ article['description'] }}</p>
+          <!-- Display base URL as "Read more at [base_url]" -->
+          <a href="{{ article['link'] }}" class="read-more" target="_blank">Read more at {{ article['base_url'] }} &rarr;</a>
+          
+          <!-- Display the publication date -->
+          <p class="pub-date">Published: {{ article['formatted_pubDate'] }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Optional: Add a footer -->
+  <footer>
+    <p>&copy; 2025 Triathlon News Aggregator. All rights reserved.</p>
+  </footer>
+</body>
+</html>

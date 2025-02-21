@@ -1,0 +1,138 @@
+/* Reset basic styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+  }
+  
+  .container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  header {
+    text-align: center;
+    padding-bottom: 20px;
+  }
+  
+  header img {
+    max-width: 150px;  /* Adjust size of the logo */
+    margin-bottom: 20px; /* Space between logo and title */
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #006400;  /* Dark Green */
+  }
+  
+  header p {
+    font-size: 1.2rem;
+    color: #7f8c8d;
+    margin-top: 10px;
+  }
+  
+  /* Styling for the article cards */
+  .articles-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+  }
+  
+  .article-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border: 2px solid #006400;  /* Default Dark Green Border */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .article-card.orange {
+    border-color: orange;  /* Orange border for 30-60 days old articles */
+  }
+  
+  .article-card.red {
+    border-color: red;  /* Red border for > 60 days old articles */
+  }
+  
+  .article-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .article-card h2 {
+    font-size: 1.6rem;
+    color: #006400;  /* Dark Green */
+    margin-bottom: 10px;
+  }
+  
+  .article-card h2 a {
+    text-decoration: none; /* Remove default underline */
+    color: #006400; /* Dark Green for the hyperlink */
+    transition: color 0.3s ease;
+  }
+  
+  .article-card h2 a:hover {
+    color: #2980b9; /* Blue on hover for links */
+  }
+  
+  .article-card p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  /* Style for the 'Read more' link */
+  .article-card .read-more {
+    font-size: 1.1rem;
+    color: #006400;  /* Dark Green */
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+  
+  .article-card .read-more:hover {
+    color: #2980b9; /* Blue on hover */
+  }
+  
+  /* Optional: Add a footer section */
+  footer {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+  }
+  
+  footer p {
+    padding: 10px;
+    border-top: 1px solid #e0e0e0;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .container {
+      width: 90%;
+    }
+  
+    h1 {
+      font-size: 2rem;
+    }
+  
+    header p {
+      font-size: 1rem;
+    }
+  
+    .article-card h2 {
+      font-size: 1.4rem;
+    }
+  }
+  
