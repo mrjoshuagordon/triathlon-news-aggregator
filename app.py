@@ -1,15 +1,47 @@
 from flask import Flask, render_template, request
 import pandas as pd
+import os
+import subprocess
 from urllib.parse import urlparse
 from datetime import datetime
 import pytz
 
 app = Flask(__name__)
 
+# File to store the last run date
+LAST_RUN_FILE = "data/last_run_date.txt"
+
+def check_and_run_scripts():
+    """Check if scripts have run today; if not, execute them."""
+    today_str = datetime.now(pytz.utc).strftime('%Y-%m-%d')
+    
+    # Check if last_run_date.txt exists and read its contents
+    if os.path.exists(LAST_RUN_FILE):
+        with open(LAST_RUN_FILE, "r") as f:
+            last_run_date = f.read().strip()
+    else:
+        last_run_date = ""
+
+    # If the last run date is different from today, execute scripts
+    if last_run_date != today_str:
+        print("Running scripts for the first time today...")
+        
+        # Run scripts
+        subprocess.run(["python", "pull_news.py"], check=True)
+        subprocess.run(["python", "pull_instagram.py"], check=True)
+
+        # Update last run date
+        with open(LAST_RUN_FILE, "w") as f:
+            f.write(today_str)
+    else:
+        print("Scripts already ran today. Skipping execution.")
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    # Check and run scripts if needed
+    check_and_run_scripts()
+
     # --- Process News Articles (today.csv) ---
-    # Read the CSV file and include the 'pubDate' column
     df = pd.read_csv('data/today.csv', usecols=['link', 'title', 'description', 'pubDate'])
     
     # Add a new column for the base URL (domain)
@@ -18,9 +50,9 @@ def index():
     # Convert 'pubDate' to datetime, handle tz-awareness
     df['pubDate'] = pd.to_datetime(df['pubDate'], errors='coerce')
     if df['pubDate'].dt.tz is None:
-        df['pubDate'] = df['pubDate'].dt.tz_localize('UTC')  # Localize if tz-naive
+        df['pubDate'] = df['pubDate'].dt.tz_localize('UTC')
     else:
-        df['pubDate'] = df['pubDate'].dt.tz_convert('UTC')  # Convert to UTC if tz-aware
+        df['pubDate'] = df['pubDate'].dt.tz_convert('UTC')
     
     # Get the current time in UTC
     today = datetime.now(pytz.utc)
@@ -50,15 +82,15 @@ def index():
     df = df.sort_values(by='pubDate', ascending=False)
     df['formatted_pubDate'] = df['pubDate'].dt.strftime('%B %d, %Y')
     
-    # --- Process Instagram Posts (instagram.csv) ---
-    # Read the Instagram CSV; adjust columns as needed.
+    # --- Process Instagram Posts ---
     new_data_file = 'data/new_insta_data/new_insta_data' + datetime.now().strftime('%d%m%Y') + '.csv'
-    instagram_df = pd.read_csv(new_data_file)
-    instagram_df = instagram_df[instagram_df['url'].str.contains('/p/')]
     
-    # If desired, you can process timestamps here, for example:
-    # instagram_df['timestamp'] = pd.to_datetime(instagram_df['timestamp'], errors='coerce')
-    # instagram_df['formatted_timestamp'] = instagram_df['timestamp'].dt.strftime('%B %d, %Y')
+    # Read the Instagram CSV only if it exists
+    if os.path.exists(new_data_file):
+        instagram_df = pd.read_csv(new_data_file)
+        instagram_df = instagram_df[instagram_df['url'].str.contains('/p/')]
+    else:
+        instagram_df = pd.DataFrame(columns=['url', 'timestamp'])  # Empty DataFrame fallback
     
     return render_template(
         'index.html', 

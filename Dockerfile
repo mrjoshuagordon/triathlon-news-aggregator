@@ -10,14 +10,6 @@ COPY . /app
 # Install necessary dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install cron
-RUN apt-get update && apt-get install -y cron
-
-# Add the cron job to run the script.py daily
-RUN echo "0 0 * * * python /app/script.py" > /etc/cron.d/scraper-cron
-RUN chmod 0644 /etc/cron.d/scraper-cron
-RUN crontab /etc/cron.d/scraper-cron
-
 # Create the necessary directories
 RUN mkdir -p /app/data/newdata
 
