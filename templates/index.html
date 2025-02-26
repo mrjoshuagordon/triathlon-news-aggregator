@@ -6,16 +6,51 @@
   <title>Triathlon News Aggregator</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+    /* Tab Styles */
+    .tab {
+      overflow: hidden;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 20px;
+    }
+    .tab button {
+      background-color: inherit;
+      border: none;
+      outline: none;
+      padding: 14px 16px;
+      cursor: pointer;
+      font-size: 17px;
+    }
+    .tab button.active {
+      border-bottom: 2px solid #007BFF;
+      font-weight: bold;
+    }
+    .tabcontent {
+      display: none;
+    }
+    
+    /* Instagram posts grid */
+    .instagram-posts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    /* Remove extra margins/padding from embedded Instagram blockquotes */
+    .instagram-posts blockquote.instagram-media {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <!-- Add logo above the title -->
       <img src="{{ url_for('static', filename='logo.png') }}" alt="Triathlon News Logo">
       <h1>Triathlon News</h1>
       <p>Stay up-to-date with the latest in triathlon news, races, training tips, and gear reviews.</p>
       
-      <!-- Date Filter Dropdown -->
+      <!-- Date Filter Dropdown for News Articles -->
       <form method="GET" action="/">
         <label for="date_filter">Filter by Date:</label>
         <select id="date_filter" name="date_filter" onchange="this.form.submit()">
@@ -26,24 +61,64 @@
       </form>
     </header>
 
-    <div class="articles-list">
-      {% for article in articles %}
-        <div class="article-card {{ article['card_class'] }}">
-          <h2><a href="{{ article['link'] }}" target="_blank">{{ article['title'] }}</a></h2>
-          <p>{{ article['description'] }}</p>
-          <!-- Display base URL as "Read more at [base_url]" -->
-          <a href="{{ article['link'] }}" class="read-more" target="_blank">Read more at {{ article['base_url'] }} &rarr;</a>
-          
-          <!-- Display the publication date -->
-          <p class="pub-date">Published: {{ article['formatted_pubDate'] }}</p>
-        </div>
-      {% endfor %}
+    <!-- Tab Navigation -->
+    <div class="tab">
+      <button class="tablinks active" onclick="openTab(event, 'News')">News</button>
+      <button class="tablinks" onclick="openTab(event, 'Instagram')">Instagram</button>
     </div>
-  </div>
 
-  <!-- Optional: Add a footer -->
+    <!-- News Articles Tab -->
+    <div id="News" class="tabcontent" style="display:block;">
+      <div class="articles-list">
+        {% for article in articles %}
+          <div class="article-card {{ article['card_class'] }}">
+            <h2><a href="{{ article['link'] }}" target="_blank">{{ article['title'] }}</a></h2>
+            <p>{{ article['description'] }}</p>
+            <a href="{{ article['link'] }}" class="read-more" target="_blank">Read more at {{ article['base_url'] }} &rarr;</a>
+            <p class="pub-date">Published: {{ article['formatted_pubDate'] }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Instagram Posts Tab -->
+    <div id="Instagram" class="tabcontent">
+      <div class="instagram-posts">
+        {% for post in instagram_posts %}
+          <div class="instagram-post-wrapper">
+            <p class="instagram-caption">{{ post.caption[:100] }}...</p> <!-- Caption Above -->
+            <blockquote class="instagram-media"
+                        data-instgrm-permalink="{{ post.url }}"
+                        data-instgrm-version="14">
+            </blockquote>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+
   <footer>
     <p>&copy; 2025 Triathlon News Aggregator. All rights reserved.</p>
   </footer>
+
+  <!-- Instagram embed script -->
+  <script async src="https://www.instagram.com/embed.js"></script>
+
+  <script>
+    // Tab switching functionality
+    function openTab(evt, tabName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
+      }
+      document.getElementById(tabName).style.display = "block";
+      evt.currentTarget.classList.add("active");
+    }
+  </script>
 </body>
 </html>
