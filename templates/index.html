@@ -73,7 +73,7 @@
         {% for article in articles %}
           <div class="article-card {{ article['card_class'] }}">
             <h2><a href="{{ article['link'] }}" target="_blank">{{ article['title'] }}</a></h2>
-            <p>{{ article['description'] }}</p>
+            <p>{{ article['description'][:200] }}...</p> 
             <a href="{{ article['link'] }}" class="read-more" target="_blank">Read more at {{ article['base_url'] }} &rarr;</a>
             <p class="pub-date">Published: {{ article['formatted_pubDate'] }}</p>
           </div>

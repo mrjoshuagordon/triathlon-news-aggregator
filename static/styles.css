@@ -46,16 +46,45 @@
     gap: 20px;
     margin-top: 30px;
   }
-  
+    
+  /* Article card style adjustments */
   .article-card {
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    border: 2px solid #006400;  /* Default Dark Green Border */
+    padding: 15px;  /* Reduced padding */
+    border: 2px solid #006400;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-height: 300px;  /* Set a max height for uniform cards */
+    overflow: hidden;  /* Prevent content overflow */
   }
-  
+
+  /* Title font size and alignment */
+  .article-card h2 {
+    font-size: 1.4rem;  /* Reduced font size */
+    margin-bottom: 10px;
+  }
+
+  /* Description style */
+  .article-card p {
+    font-size: 0.9rem;  /* Smaller font size */
+    color: #555;
+    margin-bottom: 20px;
+    height: 60px;  /* Limit height for description */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;  /* Limit to 3 lines */
+    -webkit-box-orient: vertical;
+  }
+
+  /* Read more link adjustment */
+  .article-card .read-more {
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
   .article-card.orange {
     border-color: orange;  /* Orange border for 30-60 days old articles */
   }
