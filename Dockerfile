@@ -25,4 +25,4 @@ EXPOSE 5000
 
 # Run cron in the background and then start the Flask app
 #CMD cp /data/config.py /app/config.py && python app.py
-CMD CMD cron && python app.py
+CMD cron && python app.py
