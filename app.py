@@ -30,7 +30,7 @@ def check_and_run_scripts():
         print("Running scripts for the first time today...")
         
         # Run scripts
-        run_instagram_task()
+        #run_instagram_task()
         run_news_task()
 
         # Update last run date
