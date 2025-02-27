@@ -8,11 +8,12 @@ import pytz
 from pull_instagram import run_instagram_task
 from pull_news import run_news_task 
 import pull_news
+from config import DATA_PATH
 
 app = Flask(__name__)
 
 # File to store the last run date
-LAST_RUN_FILE = "data/last_run_date.txt"
+LAST_RUN_FILE = f"{DATA_PATH}/last_run_date.txt"
 
 def check_and_run_scripts():
     """Check if scripts have run today; if not, execute them."""
@@ -30,7 +31,7 @@ def check_and_run_scripts():
         print("Running scripts for the first time today...")
         
         # Run scripts
-        #run_instagram_task()
+        run_instagram_task()
         run_news_task()
 
         # Update last run date
@@ -45,7 +46,12 @@ def index():
     check_and_run_scripts()
 
     # --- Process News Articles (today.csv) ---
-    df = pd.read_csv('data/today.csv', usecols=['link', 'title', 'description', 'pubDate'], on_bad_lines='skip')
+    if os.path.exists(f'{DATA_PATH}today.csv'):
+        df = pd.read_csv(f'{DATA_PATH}today.csv', usecols=['link', 'title', 'description', 'pubDate'], on_bad_lines='skip')
+    else:
+        print('running news task')
+        run_news_task()
+        df = pd.read_csv(f'{DATA_PATH}today.csv', usecols=['link', 'title', 'description', 'pubDate'], on_bad_lines='skip')
     
     # Add a new column for the base URL (domain)
     df['base_url'] = df['link'].apply(lambda x: urlparse(x).netloc)
@@ -86,13 +92,14 @@ def index():
     df['formatted_pubDate'] = df['pubDate'].dt.strftime('%B %d, %Y')
     
     # --- Process Instagram Posts ---
-    new_data_file = 'data/new_insta_data/new_insta_data' + datetime.now().strftime('%d%m%Y') + '.csv'
-    
     # Read the Instagram CSV only if it exists
-    if os.path.exists(new_data_file):
-        instagram_df = pd.read_csv(new_data_file, on_bad_lines='skip')
+    if os.path.exists(f'{DATA_PATH}insta_today.csv'):
+        print('reading instagram data')
+        instagram_df = pd.read_csv(f'{DATA_PATH}insta_today.csv')
         instagram_df = instagram_df[instagram_df['url'].str.contains('/p/')]
+        print(instagram_df)
     else:
+        print('cannot find insta data')
         instagram_df = pd.DataFrame(columns=['url', 'timestamp'])  # Empty DataFrame fallback
     
     return render_template(

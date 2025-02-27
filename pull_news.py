@@ -4,6 +4,7 @@ import xmltodict
 import pandas as pd
 from datetime import datetime
 from bs4 import BeautifulSoup
+from config import DATA_PATH
 
 def fetch_and_parse_rss(urls):
     """
@@ -107,16 +108,18 @@ def run_news_task():
         df['description'] = df['description'].apply(clean_html)
 
         # Save the new data to a CSV file
-        df.to_csv(new_data_file, index=False)
+        df[['link', 'title', 'description', 'pubDate']].to_csv(new_data_file, index=False)
 
         # Now proceed with the rest of the logic (e.g., union, remove duplicates, etc.)
         new_data = pd.read_csv(new_data_file, usecols=['link', 'title', 'description', 'pubDate'])
 
         # Read the existing 'today.csv' file
-        today_data = pd.read_csv('data/today.csv', usecols=['link', 'title', 'description', 'pubDate'])
-
+        if os.path.exists(f'{DATA_PATH}today.csv'):
+            today_data = pd.read_csv(f'{DATA_PATH}today.csv', usecols=['link', 'title', 'description', 'pubDate'])
         # Union the new data with the existing data
-        combined_data = pd.concat([today_data, new_data], ignore_index=True)
+            combined_data = pd.concat([today_data, new_data], ignore_index=True)
+        else:
+            combined_data = new_data
 
         # Remove duplicates based on the 'link' column (assuming 'link' is unique for each article)
         combined_data = combined_data.drop_duplicates(subset='link', keep='last')
@@ -128,7 +131,7 @@ def run_news_task():
         combined_data_sorted = combined_data.sort_values(by='pubDate', ascending=False).head(100)
 
         # Save the combined and sorted data back to 'today.csv'
-        combined_data_sorted.to_csv('data/today.csv', index=False)
+        combined_data_sorted.to_csv(f'{DATA_PATH}today.csv', index=False)
 
         print("Data update complete: today.csv saved.")
 
