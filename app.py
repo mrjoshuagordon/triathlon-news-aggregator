@@ -45,7 +45,7 @@ def index():
     check_and_run_scripts()
 
     # --- Process News Articles (today.csv) ---
-    df = pd.read_csv('data/today.csv', usecols=['link', 'title', 'description', 'pubDate'])
+    df = pd.read_csv('data/today.csv', usecols=['link', 'title', 'description', 'pubDate'], error_bad_lines=False)
     
     # Add a new column for the base URL (domain)
     df['base_url'] = df['link'].apply(lambda x: urlparse(x).netloc)
@@ -90,7 +90,7 @@ def index():
     
     # Read the Instagram CSV only if it exists
     if os.path.exists(new_data_file):
-        instagram_df = pd.read_csv(new_data_file)
+        instagram_df = pd.read_csv(new_data_file, error_bad_lines=False)
         instagram_df = instagram_df[instagram_df['url'].str.contains('/p/')]
     else:
         instagram_df = pd.DataFrame(columns=['url', 'timestamp'])  # Empty DataFrame fallback
