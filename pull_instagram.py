@@ -30,16 +30,17 @@ def fetch_all_fields():
     return df
 
 
+def run_instagram_task():
 # Construct the filename for today's date
-new_data_file = 'data/new_insta_data/new_insta_data' + datetime.now().strftime('%d%m%Y') + '.csv'
+    new_data_file = 'data/new_insta_data/new_insta_data' + datetime.now().strftime('%d%m%Y') + '.csv'
 
-# Check if the file already exists
-if not os.path.exists(new_data_file):
-    print(f"Fetching new Instagram data and saving to {new_data_file}")
-    
-    df_posts = fetch_all_fields()  # Fetch latest posts
-    
-    # Save to CSV
-    df_posts.to_csv(new_data_file, index=False)
-else:
-    print(f"File already exists: {new_data_file}. Skipping fetch.")
+    # Check if the file already exists
+    if not os.path.exists(new_data_file):
+        print(f"Fetching new Instagram data and saving to {new_data_file}")
+        
+        df_posts = fetch_all_fields()  # Fetch latest posts
+        
+        # Save to CSV
+        df_posts.to_csv(new_data_file, index=False)
+    else:
+        print(f"File already exists: {new_data_file}. Skipping fetch.")

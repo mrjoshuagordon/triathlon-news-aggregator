@@ -5,6 +5,9 @@ import subprocess
 from urllib.parse import urlparse
 from datetime import datetime
 import pytz
+from pull_instagram import run_instagram_task
+from pull_news import run_news_task 
+import pull_news
 
 app = Flask(__name__)
 
@@ -27,9 +30,8 @@ def check_and_run_scripts():
         print("Running scripts for the first time today...")
         
         # Run scripts
-        subprocess.run(["python3", "pull_news.py"], check=True)
-        subprocess.run(["python3", "pull_instagram.py"], check=True)
-
+        run_instagram_task()
+        run_news_task()
 
         # Update last run date
         with open(LAST_RUN_FILE, "w") as f:

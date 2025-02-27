@@ -73,62 +73,65 @@ def clean_html(html):
     soup = BeautifulSoup(html, "html.parser")
     return soup.get_text(separator=" ", strip=True)
 
-# Path to the new data file
-new_data_file = f'data/newdata/newdata_{datetime.now().strftime("%d%m%Y")}.csv'
+def run_news_task():
+    # Path to the new data file
+    new_data_file = f'data/newdata/newdata_{datetime.now().strftime("%d%m%Y")}.csv'
 
-# Check if the new data file exists
-if not os.path.exists(new_data_file):
-    print(f"{new_data_file} not found. Pulling new data...")
+    # Check if the new data file exists
+    if not os.path.exists(new_data_file):
+        print(f"{new_data_file} not found. Pulling new data...")
 
-    # URLs for the RSS feeds
-    urls = [
-        "https://www.tri247.com/triathlon-news/rss",
-        "https://www.triathlete.com/category/culture/news/rss",
-        "https://tri-today.com/rss",
-        "https://www.220triathlon.com/news/rss",
-        "https://triathlonmagazine.ca/rss",
-        "https://protriathletes.org/news/rss",
-        "https://slowtwitch.com/rss",
-        "http://beyondgoinglong.co.uk/?feed=rss2",
-        "https://triathloninsight.com/category/triathlon-news/rss"
-    ]
-    
-    # Fetch and parse the RSS feeds
-    feeds_json = fetch_and_parse_rss(urls)
-    
-    # Extract items from each feed into a list of dictionaries
-    items_data = extract_items(feeds_json)
-    
-    # Convert the list of dictionaries to a pandas DataFrame
-    df = pd.DataFrame(items_data)
+        # URLs for the RSS feeds
+        urls = [
+            "https://www.tri247.com/triathlon-news/rss",
+            "https://www.triathlete.com/category/culture/news/rss",
+            "https://tri-today.com/rss",
+            "https://www.220triathlon.com/news/rss",
+            "https://triathlonmagazine.ca/rss",
+            "https://protriathletes.org/news/rss",
+            "https://slowtwitch.com/rss",
+            "http://beyondgoinglong.co.uk/?feed=rss2",
+            "https://triathloninsight.com/category/triathlon-news/rss"
+        ]
+        
+        # Fetch and parse the RSS feeds
+        feeds_json = fetch_and_parse_rss(urls)
+        
+        # Extract items from each feed into a list of dictionaries
+        items_data = extract_items(feeds_json)
+        
+        # Convert the list of dictionaries to a pandas DataFrame
+        df = pd.DataFrame(items_data)
 
-    # Clean the HTML in the 'description' column
-    df['description'] = df['description'].apply(clean_html)
+        # Clean the HTML in the 'description' column
+        df['description'] = df['description'].apply(clean_html)
 
-    # Save the new data to a CSV file
-    df.to_csv(new_data_file, index=False)
-else:
-    print(f"{new_data_file} exists. Skipping data pull.")
+        # Save the new data to a CSV file
+        df.to_csv(new_data_file, index=False)
 
-# Now proceed with the rest of the logic (e.g., union, remove duplicates, etc.)
-new_data = pd.read_csv(new_data_file, usecols=['link', 'title', 'description', 'pubDate'])
+        # Now proceed with the rest of the logic (e.g., union, remove duplicates, etc.)
+        new_data = pd.read_csv(new_data_file, usecols=['link', 'title', 'description', 'pubDate'])
 
-# Read the existing 'today.csv' file
-today_data = pd.read_csv('data/today.csv', usecols=['link', 'title', 'description', 'pubDate'])
+        # Read the existing 'today.csv' file
+        today_data = pd.read_csv('data/today.csv', usecols=['link', 'title', 'description', 'pubDate'])
 
-# Union the new data with the existing data
-combined_data = pd.concat([today_data, new_data], ignore_index=True)
+        # Union the new data with the existing data
+        combined_data = pd.concat([today_data, new_data], ignore_index=True)
 
-# Remove duplicates based on the 'link' column (assuming 'link' is unique for each article)
-combined_data = combined_data.drop_duplicates(subset='link', keep='last')
+        # Remove duplicates based on the 'link' column (assuming 'link' is unique for each article)
+        combined_data = combined_data.drop_duplicates(subset='link', keep='last')
 
-# Convert 'pubDate' to datetime format to sort by date
-combined_data['pubDate'] = pd.to_datetime(combined_data['pubDate'], errors='coerce')
+        # Convert 'pubDate' to datetime format to sort by date
+        combined_data['pubDate'] = pd.to_datetime(combined_data['pubDate'], errors='coerce')
 
-# Sort by 'pubDate' and keep the 100 most recent rows
-combined_data_sorted = combined_data.sort_values(by='pubDate', ascending=False).head(100)
+        # Sort by 'pubDate' and keep the 100 most recent rows
+        combined_data_sorted = combined_data.sort_values(by='pubDate', ascending=False).head(100)
 
-# Save the combined and sorted data back to 'today.csv'
-combined_data_sorted.to_csv('data/today.csv', index=False)
+        # Save the combined and sorted data back to 'today.csv'
+        combined_data_sorted.to_csv('data/today.csv', index=False)
 
-print("Data update complete: today.csv saved.")
+        print("Data update complete: today.csv saved.")
+
+    else:
+        print(f"{new_data_file} exists. Skipping data pull.")
+
