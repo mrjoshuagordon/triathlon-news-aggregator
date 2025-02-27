@@ -20,7 +20,7 @@ RUN crontab /etc/cron.d/scraper-cron
 
 # Create the necessary directories
 RUN mkdir -p /app/data/newdata
-
+RUN cp /data/config.py /app/config.py
 # Expose the port Flask runs on
 EXPOSE 5000
 
