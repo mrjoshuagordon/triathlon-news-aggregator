@@ -27,8 +27,9 @@ def check_and_run_scripts():
         print("Running scripts for the first time today...")
         
         # Run scripts
-        subprocess.run(["python", "pull_news.py"], check=True)
-        subprocess.run(["python", "pull_instagram.py"], check=True)
+        subprocess.run(["python3", "pull_news.py"], check=True)
+        subprocess.run(["python3", "pull_instagram.py"], check=True)
+
 
         # Update last run date
         with open(LAST_RUN_FILE, "w") as f:
