@@ -7,7 +7,7 @@ from datetime import datetime
 import pytz
 from pull_instagram import run_instagram_task
 from pull_news import run_news_task 
-import pull_news
+from pull_reddit import run_reddit_task
 from config import DATA_PATH
 
 app = Flask(__name__)
@@ -33,6 +33,7 @@ def check_and_run_scripts():
         # Run scripts
         run_instagram_task()
         run_news_task()
+        run_reddit_task
 
         # Update last run date
         with open(LAST_RUN_FILE, "w") as f:
@@ -102,10 +103,20 @@ def index():
         print('cannot find insta data')
         instagram_df = pd.DataFrame(columns=['url', 'timestamp'])  # Empty DataFrame fallback
     
+    ## Process Reddit Posts --
+    if os.path.exists(f'{DATA_PATH}reddit_today.csv'):
+        reddit_df = pd.read_csv(f'{DATA_PATH}reddit_today.csv')
+    else:
+        print('running reddit task')
+        run_reddit_task()
+        reddit_df = pd.read_csv(f'{DATA_PATH}reddit_today.csv')
+    
+
     return render_template(
         'index.html', 
         articles=df.to_dict(orient='records'),
-        instagram_posts=instagram_df.to_dict(orient='records')
+        instagram_posts=instagram_df.to_dict(orient='records'),
+        reddit_posts = reddit_df.to_dict(orient='records')
     )
 
 if __name__ == '__main__':

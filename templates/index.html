@@ -65,6 +65,7 @@
     <div class="tab">
       <button class="tablinks active" onclick="openTab(event, 'News')">News</button>
       <button class="tablinks" onclick="openTab(event, 'Instagram')">Instagram</button>
+      <button class="tablinks" onclick="openTab(event, 'Reddit')">Reddit</button>
     </div>
 
     <!-- News Articles Tab -->
@@ -95,6 +96,31 @@
         {% endfor %}
       </div>
     </div>
+
+    <!-- Reddit Posts Tab -->
+    <table class="reddit-table">
+      <thead>
+        <tr>
+          <th>Community</th>   <!-- formerly "Sub" -->
+          <th>Popularity</th>  <!-- formerly "Score" -->
+          <th>Post Title</th>  <!-- formerly "Title" -->
+        </tr>
+      </thead>
+      <tbody>
+        {% for post in reddit_posts %}
+          <tr>
+            <td>{{ post.sub }}</td>
+            <td>{{ post.score }}</td>
+            <td>
+              <a href="{{ post.url }}" target="_blank">
+                {{ post.title[:100] }}{% if post.title|length > 100 %}...{% endif %}
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    
 
 
   <footer>
