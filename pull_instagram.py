@@ -31,6 +31,7 @@ def fetch_all_fields():
 
 
 def run_instagram_task():
+    print(os.listdir('data'))
 # Construct the filename for today's date
     new_data_file = 'data/new_insta_data/new_insta_data' + datetime.now().strftime('%d%m%Y') + '.csv'
 
