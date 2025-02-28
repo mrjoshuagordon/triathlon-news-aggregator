@@ -24,3 +24,4 @@ xmltodict==0.14.2
 zipp==3.21.0
 apify_client
 praw
+python-dotenv
