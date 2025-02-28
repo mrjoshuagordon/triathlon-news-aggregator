@@ -1,6 +1,12 @@
-from config import DATA_PATH, REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET
 import praw
 import pandas as pd
+from dotenv import load_dotenv
+import os
+# Load environment variables from .env file
+load_dotenv()
+DATA_PATH = os.getenv("DATA_PATH")
+REDDIT_CLIENT_ID = os.getenv("REDDIT_CLIENT_ID")
+REDDIT_CLIENT_SECRET = os.getenv("REDDIT_CLIENT_SECRET")
 
 def run_reddit_task():
     """

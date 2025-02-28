@@ -1,9 +1,13 @@
 from datetime import datetime, timedelta
 import requests
-import pandas as pd
-from config import YT_API_KEY, DATA_PATH    
+import pandas as pd  
+from dotenv import load_dotenv
+import os
+# Load environment variables from .env file
+load_dotenv()
+DATA_PATH = os.getenv("DATA_PATH")
+API_KEY = os.getenv("YT_API_KEY")
 
-API_KEY = YT_API_KEY
 
 def run_youtube_task():
     

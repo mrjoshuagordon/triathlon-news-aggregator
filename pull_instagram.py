@@ -3,12 +3,17 @@ import requests
 import time
 import pandas as pd
 from apify_client import ApifyClient
-# Replace with your actual Apify API Key
-from config import APIFY_API_KEY, TASK_ID, API_URL, DATA_PATH
 import os
 from apify_client import ApifyClient
 import pandas as pd
+from dotenv import load_dotenv
 
+# Load environment variables from .env file
+load_dotenv()
+DATA_PATH = os.getenv("DATA_PATH")
+APIFY_API_KEY = os.getenv("APIFY_API_KEY")
+TASK_ID = os.getenv("TASK_ID")
+API_URL = os.getenv("API_URL")
 
 # def fetch_all_fields():
 #     """Fetch all Instagram post data fields dynamically and save as Pandas DataFrame."""

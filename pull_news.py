@@ -4,7 +4,11 @@ import xmltodict
 import pandas as pd
 from datetime import datetime
 from bs4 import BeautifulSoup
-from config import DATA_PATH
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+DATA_PATH = os.getenv("DATA_PATH")
 
 def fetch_and_parse_rss(urls):
     """

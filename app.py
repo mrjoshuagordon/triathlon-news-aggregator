@@ -9,7 +9,11 @@ from pull_instagram import run_instagram_task
 from pull_news import run_news_task 
 from pull_reddit import run_reddit_task
 from pull_youtube import run_youtube_task
-from config import DATA_PATH
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+DATA_PATH = os.getenv("DATA_PATH")
 
 app = Flask(__name__)
 
