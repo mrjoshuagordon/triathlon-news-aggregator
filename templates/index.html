@@ -66,6 +66,7 @@
       <button class="tablinks active" onclick="openTab(event, 'News')">News</button>
       <button class="tablinks" onclick="openTab(event, 'Instagram')">Instagram</button>
       <button class="tablinks" onclick="openTab(event, 'Reddit')">Reddit</button>
+      <button class="tablinks" onclick="openTab(event, 'YouTube')">YouTube</button>
     </div>
 
     <!-- News Articles Tab -->
@@ -123,7 +124,37 @@
       </table>
     </div>
 
-    
+  <!-- YouTube Videos Tab -->
+  <div id="YouTube" class="tabcontent">
+    <table class="youtube-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Thumbnail</th>
+          <th>Published Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for video in youtube_videos %}
+          <tr>
+            <td>
+              <a href="https://www.youtube.com/watch?v={{ video.videoId }}" target="_blank">
+                {{ video.title[:100] }}{% if video.title|length > 100 %}...{% endif %}
+              </a>
+            </td>
+            <td>
+              <a href="https://www.youtube.com/watch?v={{ video.videoId }}" target="_blank">
+                <img src="{{ video.thumbnail }}" alt="{{ video.title }}" width="120">
+              </a>
+            </td>
+            <td>{{ video.formatted_publishedAt }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+
 
 
   <footer>

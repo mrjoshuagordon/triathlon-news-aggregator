@@ -76,10 +76,10 @@ def clean_html(html):
 
 def run_news_task():
     # Path to the new data file
-    new_data_file = f'data/newdata/newdata_{datetime.now().strftime("%d%m%Y")}.csv'
+    new_data_file = f'{DATA_PATH}newdata/newdata_{datetime.now().strftime("%d%m%Y")}.csv'
 
     # Check if the new data file exists
-    if not os.path.exists(new_data_file):
+    if not os.path.exists(os.path.join(DATA_PATH, 'today.csv')) and not os.path.exists(new_data_file):
         print(f"{new_data_file} not found. Pulling new data...")
 
         # URLs for the RSS feeds
@@ -114,8 +114,8 @@ def run_news_task():
         new_data = pd.read_csv(new_data_file, usecols=['link', 'title', 'description', 'pubDate'])
 
         # Read the existing 'today.csv' file
-        if os.path.exists(f'{DATA_PATH}today.csv'):
-            today_data = pd.read_csv(f'{DATA_PATH}today.csv', usecols=['link', 'title', 'description', 'pubDate'])
+        if os.path.exists(os.path.join(DATA_PATH, 'today.csv')):
+            today_data = pd.read_csv(os.path.join(DATA_PATH, 'today.csv'), usecols=['link', 'title', 'description', 'pubDate'])
         # Union the new data with the existing data
             combined_data = pd.concat([today_data, new_data], ignore_index=True)
         else:
@@ -131,7 +131,7 @@ def run_news_task():
         combined_data_sorted = combined_data.sort_values(by='pubDate', ascending=False).head(100)
 
         # Save the combined and sorted data back to 'today.csv'
-        combined_data_sorted.to_csv(f'{DATA_PATH}today.csv', index=False)
+        combined_data_sorted.to_csv(os.path.join(DATA_PATH, 'today.csv'), index=False)
 
         print("Data update complete: today.csv saved.")
 
