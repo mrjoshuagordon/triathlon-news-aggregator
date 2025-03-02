@@ -106,7 +106,7 @@ def index():
         print('reading instagram data')
         instagram_df = pd.read_csv(f'{DATA_PATH}insta_today.csv')
         instagram_df = instagram_df[instagram_df['url'].str.contains('/p/')]
-        print(instagram_df)
+        #print(instagram_df)
     else:
         print('cannot find insta data')
         instagram_df = pd.DataFrame(columns=['url', 'timestamp'])  # Empty DataFrame fallback
@@ -126,13 +126,13 @@ def index():
         latest_videos_df = pd.read_csv(f'{DATA_PATH}yt_today.csv') 
     else:
         print('running youtube task')
-        #run_youtube_task()
+        run_youtube_task()
         latest_videos_df = pd.read_csv(f'{DATA_PATH}yt_today.csv')
        
     latest_videos_df = latest_videos_df.sort_values(by='publishedAt', ascending=False)
     latest_videos_df['publishedAt'] = pd.to_datetime(latest_videos_df['publishedAt'])
     latest_videos_df['formatted_publishedAt'] = latest_videos_df['publishedAt'].dt.strftime('%B %d, %Y')
-    print(latest_videos_df)
+    #print(latest_videos_df)
     
     
     return render_template(
