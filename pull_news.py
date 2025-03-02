@@ -83,7 +83,7 @@ def run_news_task():
     new_data_file = f'{DATA_PATH}newdata/newdata_{datetime.now().strftime("%d%m%Y")}.csv'
 
     # Check if the new data file exists
-    if not os.path.exists(os.path.join(DATA_PATH, 'today.csv')) and not os.path.exists(new_data_file):
+    if not os.path.exists(new_data_file):
         print(f"{new_data_file} not found. Pulling new data...")
 
         # URLs for the RSS feeds
