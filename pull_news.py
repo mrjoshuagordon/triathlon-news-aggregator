@@ -115,7 +115,7 @@ def run_news_task():
         df[['link', 'title', 'description', 'pubDate']].to_csv(new_data_file, index=False)
 
         # Now proceed with the rest of the logic (e.g., union, remove duplicates, etc.)
-        new_data = pd.read_csv(new_data_file, usecols=['link', 'title', 'description', 'pubDate'])
+        new_data = df
 
         # Read the existing 'today.csv' file
         if os.path.exists(os.path.join(DATA_PATH, 'today.csv')):

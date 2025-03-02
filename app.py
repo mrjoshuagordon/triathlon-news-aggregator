@@ -52,7 +52,8 @@ def index():
     check_and_run_scripts()
 
     # --- Process News Articles (today.csv) ---
-    if os.path.exists(f'{DATA_PATH}today.csv'):
+    nnew_data_file = f'{DATA_PATH}newdata/newdata_{datetime.now().strftime("%d%m%Y")}.csv'
+    if os.path.exists(new_data_file):
         df = pd.read_csv(f'{DATA_PATH}today.csv', usecols=['link', 'title', 'description', 'pubDate'], on_bad_lines='skip')
     else:
         print('running news task')
