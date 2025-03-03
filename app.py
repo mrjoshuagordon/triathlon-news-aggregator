@@ -56,11 +56,11 @@ def index():
     new_data_file = f'{DATA_PATH}newdata/newdata_{datetime.now().strftime("%d%m%Y")}.csv'
     print(new_data_file)
     if os.path.exists(new_data_file):
-        df = pd.read_csv(f'{DATA_PATH}today.csv', usecols=['link', 'title', 'description', 'pubDate'], on_bad_lines='skip')
+        df = pd.read_csv(new_data_file, usecols=['link', 'title', 'description', 'pubDate'], on_bad_lines='skip')
     else:
         print('running news task')
         run_news_task()
-        df = pd.read_csv(f'{DATA_PATH}today.csv', usecols=['link', 'title', 'description', 'pubDate'], on_bad_lines='skip')
+        df = pd.read_csv(new_data_file, usecols=['link', 'title', 'description', 'pubDate'], on_bad_lines='skip')
     
     # Add a new column for the base URL (domain)
     df['base_url'] = df['link'].apply(lambda x: urlparse(x).netloc)
