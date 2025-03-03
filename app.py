@@ -101,17 +101,19 @@ def index():
     
     # --- Process Instagram Posts ---
     # Read the Instagram CSV only if it exists
+    print('start instagram')
     new_data_file = f'{DATA_PATH}new_insta_data/new_insta_data_{datetime.now().strftime("%d%m%Y")}.csv'
     if os.path.exists(new_data_file):
         print('reading instagram data')
         instagram_df = pd.read_csv(f'{DATA_PATH}insta_today.csv')
         instagram_df = instagram_df[instagram_df['url'].str.contains('/p/')]
-        #print(instagram_df)
+        print(instagram_df)
     else:
         print('cannot find insta data')
         instagram_df = pd.DataFrame(columns=['url', 'timestamp'])  # Empty DataFrame fallback
     
     ## Process Reddit Posts --
+    print('start reddit')
     new_data_file = f'{DATA_PATH}new_reddit_data/new_reddit_data_{datetime.now().strftime("%d%m%Y")}.csv'
     if os.path.exists(new_data_file):
         reddit_df = pd.read_csv(f'{DATA_PATH}reddit_today.csv')
@@ -121,6 +123,7 @@ def index():
         reddit_df = pd.read_csv(f'{DATA_PATH}reddit_today.csv')
  
      ## Process Youtube Posts --
+    print('start youtube')
     new_data_file = f'{DATA_PATH}new_yt_data/new_yt_data_{datetime.now().strftime("%d%m%Y")}.csv'
     if os.path.exists(new_data_file):
         latest_videos_df = pd.read_csv(f'{DATA_PATH}yt_today.csv') 

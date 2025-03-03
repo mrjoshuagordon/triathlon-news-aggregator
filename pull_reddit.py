@@ -2,6 +2,8 @@ import praw
 import pandas as pd
 from dotenv import load_dotenv
 import os
+from datetime import datetime, timezone
+
 # Load environment variables from .env file
 load_dotenv()
 DATA_PATH = os.getenv("DATA_PATH")
@@ -41,7 +43,8 @@ def run_reddit_task():
                     'title': submission.title,
                     'score': submission.score,
                     'url': submission.url,
-                    'author': submission.author.name if submission.author else None
+                    'author': submission.author.name if submission.author else None,
+                    'published': datetime.fromtimestamp(submission.created_utc, tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
                 })
 
         # Create a DataFrame from the list of posts

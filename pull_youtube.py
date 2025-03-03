@@ -7,7 +7,7 @@ import os
 load_dotenv()
 DATA_PATH = os.getenv("DATA_PATH")
 API_KEY = os.getenv("YT_API_KEY")
-
+print(API_KEY)
 
 def run_youtube_task():
     

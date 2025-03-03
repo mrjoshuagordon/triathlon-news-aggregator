@@ -98,31 +98,33 @@
       </div>
     </div>
 
-    <!-- Reddit Posts Tab -->
-    <div id="Reddit" class="tabcontent">
-      <table class="reddit-table">
-        <thead>
+  <!-- Reddit Posts Tab -->
+  <div id="Reddit" class="tabcontent">
+    <table class="reddit-table">
+      <thead>
+        <tr>
+          <th>Community</th>
+          <th>Popularity</th>
+          <th>Post Title</th>
+          <th>Published</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for post in reddit_posts %}
           <tr>
-            <th>Community</th>
-            <th>Popularity</th>
-            <th>Post Title</th>
+            <td>{{ post.sub }}</td>
+            <td>{{ post.score }}</td>
+            <td>
+              <a href="{{ post.url }}" target="_blank">
+                {{ post.title[:100] }}{% if post.title|length > 100 %}...{% endif %}
+              </a>
+            </td>
+            <td>{{ post.published }}</td>
           </tr>
-        </thead>
-        <tbody>
-          {% for post in reddit_posts %}
-            <tr>
-              <td>{{ post.sub }}</td>
-              <td>{{ post.score }}</td>
-              <td>
-                <a href="{{ post.url }}" target="_blank">
-                  {{ post.title[:100] }}{% if post.title|length > 100 %}...{% endif %}
-                </a>
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
   <!-- YouTube Videos Tab -->
   <div id="YouTube" class="tabcontent">
