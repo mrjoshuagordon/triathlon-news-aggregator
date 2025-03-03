@@ -38,7 +38,8 @@ def check_and_run_scripts():
         # Run scripts
         run_instagram_task()
         run_news_task()
-        run_reddit_task
+        run_reddit_task()
+        run_youtube_task()
 
         # Update last run date
         with open(LAST_RUN_FILE, "w") as f:
