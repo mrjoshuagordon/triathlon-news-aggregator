@@ -78,7 +78,7 @@ def run_youtube_task():
         videos_df.to_csv(today_data_file, index=False)
     else:
         try:
-            videos_df = find_newest_csv_by_mtime(DATA_PATH)
+            videos_df = pd.read_csv(find_newest_csv_by_mtime(DATA_PATH))
             videos_df.to_csv(today_data_file, index=False)
         except:
             print("No new videos found")
