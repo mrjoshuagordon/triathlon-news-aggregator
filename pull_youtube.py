@@ -3,11 +3,27 @@ import requests
 import pandas as pd  
 from dotenv import load_dotenv
 import os
+import glob
 # Load environment variables from .env file
 load_dotenv()
 DATA_PATH = os.getenv("DATA_PATH")
 API_KEY = os.getenv("YT_API_KEY")
 print(API_KEY)
+
+
+def find_newest_csv_by_mtime(data_path):
+    folder = os.path.join(data_path, "new_yt_data")
+    pattern = os.path.join(folder, "new_yt_data_*.csv")
+    csv_files = glob.glob(pattern)
+    
+    if not csv_files:
+        return None  # No CSV files found
+
+    # Sort the files by their modification time (oldest first)
+    csv_files.sort(key=lambda x: os.path.getmtime(x))
+    # Pop the last file from the sorted list, which is the newest
+    newest_file = csv_files.pop()
+    return newest_file
 
 def run_youtube_task():
     
@@ -54,7 +70,15 @@ def run_youtube_task():
     today_data_file = f'{DATA_PATH}yt_today.csv'
 
     # Save DataFrame to CSV files
-    videos_df.to_csv(new_data_file, index=False)
-    videos_df.to_csv(today_data_file, index=False)
+    
+    if videos_df.shape[0] > 0:
+        videos_df.to_csv(new_data_file, index=False)
+        videos_df.to_csv(today_data_file, index=False)
+    else:
+        try:
+            videos_df = find_newest_csv_by_mtime(DATA_PATH)
+            videos_df.to_csv(today_data_file, index=False)
+        except:
+            print("No new videos found")
     print(f"Data successfully saved to {new_data_file} and {today_data_file}")
     
