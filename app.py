@@ -138,7 +138,11 @@ def index():
     print('start youtube')
     new_data_file = f'{DATA_PATH}new_yt_data/new_yt_data_{datetime.now().strftime("%d%m%Y")}.csv'
     if os.path.exists(new_data_file):
-        latest_videos_df = pd.read_csv(f'{DATA_PATH}yt_today.csv') 
+        try:
+            latest_videos_df = pd.read_csv(f'{DATA_PATH}yt_today.csv') 
+        except:
+            run_youtube_task()
+            latest_videos_df = pd.read_csv(f'{DATA_PATH}yt_today.csv')
     else:
         print('running youtube task')
         run_youtube_task()

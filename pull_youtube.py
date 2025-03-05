@@ -41,8 +41,10 @@ def run_youtube_task():
 
     # Iterate over each channel ID to fetch latest videos
     for channel_id in channel_ids:
-        URL_VIDEOS = f"https://www.googleapis.com/youtube/v3/search?part=snippet&channelId={channel_id}&maxResults=10&order=date&type=video&key={API_KEY}"
-
+        URL_VIDEOS = (
+            f"https://www.googleapis.com/youtube/v3/search?part=snippet"
+            f"&channelId={channel_id}&maxResults=1&order=date&type=video&key={API_KEY}"
+        )
         response = requests.get(URL_VIDEOS)
         data = response.json()
 
