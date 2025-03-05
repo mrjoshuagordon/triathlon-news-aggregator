@@ -20,32 +20,43 @@ app = Flask(__name__)
 # File to store the last run date
 LAST_RUN_FILE = f"{DATA_PATH}last_run_date.txt"
 
+
 def check_and_run_scripts():
-    """Check if scripts have run today; if not, execute them."""
-    today_str = datetime.now(pytz.utc).strftime('%Y-%m-%d')
+    """Check if scripts have run today after UTC 12pm; if not, execute them."""
+    # Get current UTC time and compute today's noon time
+    now_utc = datetime.now(pytz.utc)
+    today_noon = now_utc.replace(hour=12, minute=0, second=0, microsecond=0)
     
-    # Check if last_run_date.txt exists and read its contents
+    # Read the last run timestamp from file, if it exists
     if os.path.exists(LAST_RUN_FILE):
         with open(LAST_RUN_FILE, "r") as f:
-            last_run_date = f.read().strip()
+            last_run_str = f.read().strip()
+        try:
+            # Expecting ISO format string
+            last_run_date = datetime.fromisoformat(last_run_str)
+            # Ensure timezone info is set; if not, assume UTC
+            if last_run_date.tzinfo is None:
+                last_run_date = last_run_date.replace(tzinfo=pytz.utc)
+        except Exception:
+            last_run_date = None
     else:
-        last_run_date = ""
+        last_run_date = None
 
-    # If the last run date is different from today, execute scripts
-    if last_run_date != today_str:
+    # Run scripts if never run before or if last run was at or before today's UTC noon
+    if last_run_date is None or last_run_date <= today_noon:
         print("Running scripts for the first time today...")
         
-        # Run scripts
+        # Run your tasks here
         run_instagram_task()
         run_news_task()
         run_reddit_task()
         run_youtube_task()
 
-        # Update last run date
+        # Update the file with the current UTC timestamp in ISO format
         with open(LAST_RUN_FILE, "w") as f:
-            f.write(today_str)
+            f.write(datetime.now(pytz.utc).isoformat())
     else:
-        print("Scripts already ran today. Skipping execution.")
+        print("Scripts already ran today after UTC 12pm. Skipping execution.")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -107,7 +118,7 @@ def index():
     if os.path.exists(new_data_file):
         print('reading instagram data')
         instagram_df = pd.read_csv(f'{DATA_PATH}insta_today.csv')
-        instagram_df = instagram_df[instagram_df['url'].str.contains('/p/')]
+        instagram_df = instagram_df[instagram_df['url'].str.contains('/p/', na=False)]
         print(instagram_df)
     else:
         print('cannot find insta data')
