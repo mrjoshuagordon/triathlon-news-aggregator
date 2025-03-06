@@ -25,7 +25,7 @@ def check_and_run_scripts():
     """Check if scripts have run today after UTC 12pm; if not, execute them."""
     # Get current UTC time and compute today's noon time
     now_utc = datetime.now(pytz.utc)
-    today_noon = now_utc.replace(hour=12, minute=0, second=0, microsecond=0)
+    today_noon = now_utc.replace(hour=7, minute=0, second=0, microsecond=0)
     
     # Read the last run timestamp from file, if it exists
     if os.path.exists(LAST_RUN_FILE):

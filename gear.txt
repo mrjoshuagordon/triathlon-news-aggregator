@@ -1,4 +1,23 @@
 http://www.dcrainmaker.com/feed
 https://www.runningshoesguru.com/feed/
 https://gearjunkie.com/biking/rss
+
+
+cycling & running:
+https://road.cc/rss 
+https://run247.com/feed
 https://intheknowcycling.com/blog/rss
+http://runningmagazine.ca/feed/
+https://www.irunfar.com/feed
+https://www.runtothefinish.com/feed/
+https://believeintherun.com/feed
+trainerroad.com/blog/feed
+https://feeds.purplemanager.com/193c804a-a673-47bd-b09b-11baf4822a17/bikeradar-news
+
+podcast rss
+https://feeds.buzzsprout.com/1922707.rss
+https://feeds.simplecast.com/RxABNZH0
+https://media.rss.com/triathlontherapy/feed.xml 
+https://rss.com/podcasts/triathlontherapy/
+https://www.omnycontent.com/d/playlist/e47441f6-05a4-494f-8b56-ab9001865616/29c15e9a-11d9-4426-84e6-ab9100172662/6f68cfc5-21a8-41d8-8f91-ab910017268d/podcast.rss 
+https://anchor.fm/s/ee9bd108/podcast/rss 
