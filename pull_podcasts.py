@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
-DATA_PATH = 'data/'#os.getenv("DATA_PATH")
+DATA_PATH = os.getenv("DATA_PATH")
 
 def fetch_and_parse_podcast_rss(podcasts):
     """

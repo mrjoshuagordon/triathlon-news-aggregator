@@ -52,6 +52,7 @@ def check_and_run_scripts():
         run_news_task()
         run_reddit_task()
         run_youtube_task()
+        run_podcast_task()
 
         # Update the file with the current UTC timestamp in ISO format
         with open(LAST_RUN_FILE, "w") as f:
