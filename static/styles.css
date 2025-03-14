@@ -1,300 +1,381 @@
 /* Reset basic styling */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
-  }
-  
-  .container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  header {
-    text-align: center;
-    padding-bottom: 20px;
-  }
-  
-  header img {
-    max-width: 150px;  /* Adjust size of the logo */
-    margin-bottom: 20px; /* Space between logo and title */
-  }
-  
-  h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #006400;  /* Dark Green */
-  }
-  
-  header p {
-    font-size: 1.2rem;
-    color: #7f8c8d;
-    margin-top: 10px;
-  }
-  
-  /* Styling for the article cards */
-  .articles-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    margin-top: 30px;
-  }
-    
-  /* Article card style adjustments */
-  .article-card {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 15px;  /* Reduced padding */
-    border: 2px solid #006400;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    max-height: 300px;  /* Set a max height for uniform cards */
-    overflow: hidden;  /* Prevent content overflow */
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  /* Title font size and alignment */
-  .article-card h2 {
-    font-size: 1.4rem;  /* Reduced font size */
-    margin-bottom: 10px;
-  }
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+}
 
-  /* Description style */
-  .article-card p {
-    font-size: 0.9rem;  /* Smaller font size */
-    color: #555;
-    margin-bottom: 20px;
-    height: 60px;  /* Limit height for description */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;  /* Limit to 3 lines */
-    -webkit-box-orient: vertical;
-  }
+.container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+}
 
-  /* Read more link adjustment */
-  .article-card .read-more {
-    font-size: 1rem;
-    font-weight: 500;
-    transition: color 0.3s ease;
-  }
+header {
+  text-align: center;
+  padding-bottom: 20px;
+}
 
-  .article-card.orange {
-    border-color: orange;  /* Orange border for 30-60 days old articles */
-  }
-  
-  .article-card.red {
-    border-color: red;  /* Red border for > 60 days old articles */
-  }
-  
-  .article-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-  }
-  
-  .article-card h2 {
-    font-size: 1.6rem;
-    color: #006400;  /* Dark Green */
-    margin-bottom: 10px;
-  }
-  
-  .article-card h2 a {
-    text-decoration: none; /* Remove default underline */
-    color: #006400; /* Dark Green for the hyperlink */
-    transition: color 0.3s ease;
-  }
-  
-  .article-card h2 a:hover {
-    color: #2980b9; /* Blue on hover for links */
-  }
-  
-  .article-card p {
-    font-size: 1rem;
-    color: #555;
-    margin-bottom: 20px;
-  }
-  
-  /* Style for the 'Read more' link */
-  .article-card .read-more {
-    font-size: 1.1rem;
-    color: #006400;  /* Dark Green */
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s ease;
-  }
-  
-  .article-card .read-more:hover {
-    color: #2980b9; /* Blue on hover */
-  }
-  
-  /* Optional: Add a footer section */
-  footer {
-    text-align: center;
-    margin-top: 50px;
-    font-size: 0.9rem;
-    color: #7f8c8d;
-  }
-  
-  footer p {
-    padding: 10px;
-    border-top: 1px solid #e0e0e0;
-  }
-  
-  /* Modern Reddit Posts Table Styling */
-  .reddit-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px auto;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+header img {
+  max-width: 150px;
+  /* Adjust size of the logo */
+  margin-bottom: 20px;
+  /* Space between logo and title */
+}
 
-  /* Table header styling */
-  .reddit-table thead {
-    background-color: #343a40; /* dark background */
-  }
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #006400;
+  /* Dark Green */
+}
 
-  .reddit-table th {
-    color: #fff;
-    text-align: left;
-    padding: 12px 15px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-  }
+header p {
+  font-size: 1.2rem;
+  color: #7f8c8d;
+  margin-top: 10px;
+}
 
-  /* Rename headers in your HTML template:
+/* Styling for the article cards */
+.articles-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+/* Article card style adjustments */
+.article-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  /* Reduced padding */
+  border: 2px solid #006400;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  max-height: 300px;
+  /* Set a max height for uniform cards */
+  overflow: hidden;
+  /* Prevent content overflow */
+}
+
+/* Title font size and alignment */
+.article-card h2 {
+  font-size: 1.4rem;
+  /* Reduced font size */
+  margin-bottom: 10px;
+}
+
+/* Description style */
+.article-card p {
+  font-size: 0.9rem;
+  /* Smaller font size */
+  color: #555;
+  margin-bottom: 20px;
+  height: 60px;
+  /* Limit height for description */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  /* Limit to 3 lines */
+  -webkit-box-orient: vertical;
+}
+
+/* Read more link adjustment */
+.article-card .read-more {
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.article-card.orange {
+  border-color: orange;
+  /* Orange border for 30-60 days old articles */
+}
+
+.article-card.red {
+  border-color: red;
+  /* Red border for > 60 days old articles */
+}
+
+.article-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.article-card h2 {
+  font-size: 1.6rem;
+  color: #006400;
+  /* Dark Green */
+  margin-bottom: 10px;
+}
+
+.article-card h2 a {
+  text-decoration: none;
+  /* Remove default underline */
+  color: #006400;
+  /* Dark Green for the hyperlink */
+  transition: color 0.3s ease;
+}
+
+.article-card h2 a:hover {
+  color: #2980b9;
+  /* Blue on hover for links */
+}
+
+.article-card p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+/* Style for the 'Read more' link */
+.article-card .read-more {
+  font-size: 1.1rem;
+  color: #006400;
+  /* Dark Green */
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.article-card .read-more:hover {
+  color: #2980b9;
+  /* Blue on hover */
+}
+
+/* Optional: Add a footer section */
+footer {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+footer p {
+  padding: 10px;
+  border-top: 1px solid #e0e0e0;
+}
+
+/* Modern Reddit Posts Table Styling */
+.reddit-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px auto;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Table header styling */
+.reddit-table thead {
+  background-color: #343a40;
+  /* dark background */
+}
+
+.reddit-table th {
+  color: #fff;
+  text-align: left;
+  padding: 12px 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Rename headers in your HTML template:
     Replace "Sub" with "Community",
     "Score" with "Popularity",
     "Title" with "Post Title" */
-    
-  /* Table cell styling */
-  .reddit-table td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #f1f1f1;
-    color: #333;
+
+/* Table cell styling */
+.reddit-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #f1f1f1;
+  color: #333;
+}
+
+/* Alternating row colors for better readability */
+.reddit-table tbody tr:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
+/* Hover effect on rows */
+.reddit-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Styling for hyperlinks in the Post Title column */
+.reddit-table a {
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.reddit-table a:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+/* Modern YouTube Videos Table Styling */
+.youtube-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px auto;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Table header styling */
+.youtube-table thead {
+  background-color: #343a40;
+  /* dark background */
+}
+
+.youtube-table th {
+  color: #fff;
+  text-align: left;
+  padding: 12px 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Table cell styling */
+.youtube-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #f1f1f1;
+  color: #333;
+}
+
+/* Alternating row colors for better readability */
+.youtube-table tbody tr:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
+/* Hover effect on rows */
+.youtube-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Styling for hyperlinks in the Title column */
+.youtube-table a {
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.youtube-table a:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+/* Styling for thumbnail images */
+.youtube-table img {
+  border-radius: 5px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease-in-out;
+}
+
+.youtube-table img:hover {
+  transform: scale(1.1);
+}
+
+/* Center align the thumbnail images */
+.youtube-table td:nth-child(2) {
+  text-align: center;
+}
+
+
+/* Container that holds all podcast cards */
+.podcast-list {
+  /* Display cards in a responsive grid */
+  display: grid;
+  /* Adjust the minimum size and number of columns as needed */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+  padding: 0;
+}
+
+/* Each individual podcast card */
+.postcast-card {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: box-shadow 0.2s ease;
+}
+
+/* Add a box shadow on hover to give a "lifted" effect */
+.postcast-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Style for the podcast name */
+.postcast-card p {
+  font-weight: 600;
+  color: #666;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Style for the title */
+.postcast-card h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+/* Style for the link */
+.postcast-card a {
+  display: inline-block;
+  color: #0073e6;
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+  margin-bottom: 1rem;
+}
+
+.postcast-card a:hover {
+  border-color: #0073e6;
+}
+
+/* Style for the published date */
+.postcast-card .pub-date {
+  font-size: 0.85rem;
+  color: #999;
+  margin-top: 0.5rem;
+}
+
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    width: 90%;
   }
 
-  /* Alternating row colors for better readability */
-  .reddit-table tbody tr:nth-child(even) {
-    background-color: #f5f5f5;
+  h1 {
+    font-size: 2rem;
   }
 
-  /* Hover effect on rows */
-  .reddit-table tbody tr:hover {
-    background-color: #f9f9f9;
+  header p {
+    font-size: 1rem;
   }
 
-  /* Styling for hyperlinks in the Post Title column */
-  .reddit-table a {
-    color: #007bff;
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-
-  .reddit-table a:hover {
-    text-decoration: underline;
-    color: #0056b3;
-  }
-
-    /* Modern YouTube Videos Table Styling */
-  .youtube-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px auto;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  /* Table header styling */
-  .youtube-table thead {
-    background-color: #343a40; /* dark background */
-  }
-
-  .youtube-table th {
-    color: #fff;
-    text-align: left;
-    padding: 12px 15px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-  }
-
-  /* Table cell styling */
-  .youtube-table td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #f1f1f1;
-    color: #333;
-  }
-
-  /* Alternating row colors for better readability */
-  .youtube-table tbody tr:nth-child(even) {
-    background-color: #f5f5f5;
-  }
-
-  /* Hover effect on rows */
-  .youtube-table tbody tr:hover {
-    background-color: #f9f9f9;
-  }
-
-  /* Styling for hyperlinks in the Title column */
-  .youtube-table a {
-    color: #007bff;
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-
-  .youtube-table a:hover {
-    text-decoration: underline;
-    color: #0056b3;
-  }
-
-  /* Styling for thumbnail images */
-  .youtube-table img {
-    border-radius: 5px;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s ease-in-out;
-  }
-
-  .youtube-table img:hover {
-    transform: scale(1.1);
-  }
-
-  /* Center align the thumbnail images */
-  .youtube-table td:nth-child(2) {
-    text-align: center;
+  .article-card h2 {
+    font-size: 1.4rem;
   }
 
 
-
-
-
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .container {
-      width: 90%;
-    }
-  
-    h1 {
-      font-size: 2rem;
-    }
-  
-    header p {
-      font-size: 1rem;
-    }
-  
-    .article-card h2 {
-      font-size: 1.4rem;
-    }
-
-    
-  }
-  
+}

@@ -9,6 +9,7 @@ from pull_instagram import run_instagram_task
 from pull_news import run_news_task 
 from pull_reddit import run_reddit_task
 from pull_youtube import run_youtube_task
+from pull_podcasts import run_podcast_task
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -119,7 +120,7 @@ def index():
         print('reading instagram data')
         instagram_df = pd.read_csv(f'{DATA_PATH}insta_today.csv')
         instagram_df = instagram_df[instagram_df['url'].str.contains('/p/', na=False)]
-        print(instagram_df)
+        #print(instagram_df)
     else:
         print('cannot find insta data')
         instagram_df = pd.DataFrame(columns=['url', 'timestamp'])  # Empty DataFrame fallback
@@ -152,14 +153,53 @@ def index():
     latest_videos_df['publishedAt'] = pd.to_datetime(latest_videos_df['publishedAt'])
     latest_videos_df['formatted_publishedAt'] = latest_videos_df['publishedAt'].dt.strftime('%B %d, %Y')
     #print(latest_videos_df)
+
+    ## Process Podcast
+    new_data_file = f'{DATA_PATH}new_podcast_data/new_podcast_data_{datetime.now().strftime("%d%m%Y")}.csv'
+    print(new_data_file)
+    if os.path.exists(new_data_file):
+        pod_df = pd.read_csv(new_data_file, usecols=['url', 'title', 'description', 'pubDate','podcast_name'], on_bad_lines='skip')
+    else:
+        print('running podcast task')
+        run_podcast_task()
+        pod_df = pd.read_csv(new_data_file, usecols=['url', 'title', 'description', 'pubDate', 'podcast_name'], on_bad_lines='skip')
     
+    # Add a new column for the base URL (domain)
+    #pod_df['base_url'] = pod_df['link'].apply(lambda x: urlparse(x).netloc)
+    
+    # Convert 'pubDate' to datetime, handle tz-awareness
+    pod_df['pubDate'] = pd.to_datetime(pod_df['pubDate'], errors='coerce', utc=True)
+    print(pod_df)
+    if pod_df['pubDate'].dt.tz is None:
+        pod_df['pubDate'] = pod_df['pubDate'].dt.tz_localize('UTC')
+    else:
+        pod_df['pubDate'] = pod_df['pubDate'].dt.tz_convert('UTC')
+    pod_df = (
+        pod_df
+        .sort_values(by='pubDate', ascending=False)
+        .groupby('podcast_name')
+        .head(2)                # take the first 2 rows in each group
+        .reset_index(drop=True) # optional, just to clean up the index
+    )
+
+    pod_df['formatted_pubDate'] = pod_df['pubDate'].dt.strftime('%B %d, %Y')
+    pod_df = pod_df.sort_values(by='pubDate', ascending=False)
+    current_time = pd.Timestamp.now(tz='UTC')
+    three_weeks_ago = current_time - pd.Timedelta(weeks=3)
+    pod_df = pod_df[pod_df['pubDate'] >= three_weeks_ago]
+    pod_df = pod_df[pod_df['formatted_pubDate'].notna()]
+    # Filter the DataFrame for rows with pubDate >= three_weeks_ago
+        
+    pod_df['card_class'] = 'normal'
+    print(pod_df.head())
     
     return render_template(
         'index.html', 
         articles=df.to_dict(orient='records'),
         instagram_posts=instagram_df.to_dict(orient='records'),
         reddit_posts = reddit_df.to_dict(orient='records'),
-        youtube_videos = latest_videos_df[['title', 'videoId', 'thumbnail', 'formatted_publishedAt']].to_dict(orient='records')
+        youtube_videos = latest_videos_df[['title', 'videoId', 'thumbnail', 'formatted_publishedAt']].to_dict(orient='records'),
+        podcasts = pod_df[['url', 'title', 'description', 'formatted_pubDate','card_class','podcast_name']].to_dict(orient='records')
     )
 
 if __name__ == '__main__':

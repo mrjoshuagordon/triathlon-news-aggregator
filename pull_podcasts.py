@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
-DATA_PATH = os.getenv("DATA_PATH")
+DATA_PATH = 'data/'#os.getenv("DATA_PATH")
 
 def fetch_and_parse_podcast_rss(podcasts):
     """
@@ -38,7 +38,7 @@ def fetch_and_parse_podcast_rss(podcasts):
             parsed_feed = xmltodict.parse(xml_content)
             feeds[url] = parsed_feed
         except Exception as e:
-            print(f"Error fetching {url} for podcast '{podcast_name}': {e}")
+            print(f"Error fetching podcast '{podcast_name}': {e}")
     return feeds
 
 def extract_items(feeds_json, podcasts):
@@ -55,7 +55,6 @@ def extract_items(feeds_json, podcasts):
     """
     # Create a reverse mapping: feed URL -> podcast name
     url_to_podcast = {url: name for name, url in podcasts.items()}
-    
     items_list = []
     for url, feed in feeds_json.items():
         # Safely access the channel
@@ -87,7 +86,7 @@ def clean_html(html):
 
 def run_podcast_task():
     # Path to the new data file
-    new_data_file = f'{DATA_PATH}new_podcast_data/new_postcast_data_{datetime.now().strftime("%d%m%Y")}.csv'
+    new_data_file = f'{DATA_PATH}new_podcast_data/new_podcast_data_{datetime.now().strftime("%d%m%Y")}.csv'
 
     # Check if the new data file exists
     if not os.path.exists(new_data_file):
@@ -98,10 +97,14 @@ def run_podcast_task():
             "That Triathlon Life Podcast": "https://feeds.buzzsprout.com/1922707.rss",
             "That Triathlon Show": "https://feeds.simplecast.com/RxABNZH0",
             "Triathlon Therapy": "https://media.rss.com/triathlontherapy/feed.xml",
-            "Tri Velo Coaching": "https://www.omnycontent.com/d/playlist/e47441f6-05a4-494f-8b56-ab9001865616/29c15e9a-11d9-4426-84e6-ab910017268d/podcast.rss",
+            #"Tri Velo Coaching": "https://www.omnycontent.com/d/playlist/e47441f6-05a4-494f-8b56-ab9001865616/29c15e9a-11d9-4426-84e6-ab910017268d/podcast.rss",
             "TrainerRoad": "https://anchor.fm/s/ee9bd108/podcast/rss",
             "Crushing Iron": "https://crushingiron.libsyn.com/rss",
-            "Pro Tri News": "https://feeds.buzzsprout.com/1736374.rss"
+            "Pro Tri News": "https://feeds.buzzsprout.com/1736374.rss",
+            "TriVelo Coaching": "https://www.omnycontent.com/d/playlist/e47441f6-05a4-494f-8b56-ab9001865616/29c15e9a-11d9-4426-84e6-ab9100172662/6f68cfc5-21a8-41d8-8f91-ab910017268d/podcast.rss",
+            "Oxygen Addict" : "http://feeds.podtrac.com/YdHIp7gcgnlh",
+            "The Triathlon Hour" : "https://feed.podbean.com/HowTheyTrain/feed.xml",
+            "Ironman Insider" : "https://feeds.buzzsprout.com/2360650.rss"
         }
         
         # Fetch and parse the RSS feeds
@@ -115,16 +118,25 @@ def run_podcast_task():
 
         # Clean the HTML in the 'description' column
         df['description'] = df['description'].apply(clean_html)
+        print(df['enclosure'])
+
+        def extract_url(enclosure):
+            if isinstance(enclosure, dict):
+                return enclosure.get('@url')
+            else:
+                return None
+
+        df['url'] = df['enclosure'].apply(extract_url)
 
         # Save the new data to a CSV file
-        df[['link', 'title', 'description', 'pubDate']].to_csv(new_data_file, index=False)
+        df.to_csv(new_data_file, index=False)
 
         # Now proceed with the rest of the logic (e.g., union, remove duplicates, etc.)
         new_data = df
-
+        #print(new_data)
         # Read the existing 'today.csv' file
-        if os.path.exists(os.path.join(DATA_PATH, 'today.csv')):
-            today_data = pd.read_csv(os.path.join(DATA_PATH, 'podcast_today.csv'), usecols=['link', 'title', 'description', 'pubDate'])
+        if os.path.exists(os.path.join(DATA_PATH, 'podcast_today.csv')):
+            today_data = pd.read_csv(os.path.join(DATA_PATH, 'podcast_today.csv'), usecols=['url', 'title', 'description', 'pubDate'])
         # Union the new data with the existing data
             combined_data = pd.concat([today_data, new_data], ignore_index=True)
         else:
@@ -134,7 +146,14 @@ def run_podcast_task():
         combined_data = combined_data.drop_duplicates(subset='link', keep='last')
 
         # Convert 'pubDate' to datetime format to sort by date
-        combined_data['pubDate'] = pd.to_datetime(combined_data['pubDate'], errors='coerce')
+        combined_data.loc[:, 'pubDate'] = pd.to_datetime(combined_data['pubDate'], errors='coerce', utc=True)
+
+        # Calculate the current UTC time and the threshold for three weeks ago
+        current_time = pd.Timestamp.now(tz='UTC')
+        three_weeks_ago = current_time - pd.Timedelta(weeks=3)
+
+        # Filter the DataFrame for rows with pubDate >= three_weeks_ago
+        combined_data = combined_data[combined_data['pubDate'] >= three_weeks_ago]
 
         # Sort by 'pubDate' and keep the 100 most recent rows
         combined_data_sorted = combined_data.sort_values(by='pubDate', ascending=False).head(100)
@@ -147,5 +166,5 @@ def run_podcast_task():
     else:
         print(f"{new_data_file} exists. Skipping data pull.")
 
-if __name__ == '__main__':
-    run_podcast_task()
+#if __name__ == '__main__':
+#    run_podcast_task()

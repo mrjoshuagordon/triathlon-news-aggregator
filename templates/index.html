@@ -69,6 +69,7 @@
       <button class="tablinks" onclick="openTab(event, 'Instagram')">Instagram</button>
       <button class="tablinks" onclick="openTab(event, 'Reddit')">Reddit</button>
       <button class="tablinks" onclick="openTab(event, 'YouTube')">YouTube</button>
+      <button class="tablinks" onclick="openTab(event, 'Podcasts')">Podcasts</button>
     </div>
 
     <!-- News Articles Tab -->
@@ -157,7 +158,21 @@
       </tbody>
     </table>
   </div>
-
+    
+  <!-- Podcast Tab -->
+    <div id="Podcasts" class="tabcontent">
+      <div class="poscast-list">
+        {% for podcast in podcasts %}
+        <div class="postcast-card {{ podcast['card_class'] }}">
+            <p>{{ podcast['podcast_name'] }}</p>
+            <p><a href="{{ podcast['url'] }}" target="_blank">{{ podcast['title'] }}</a></p>
+            <a href="{{ podcast['url'] }}" target="_blank">Click here to hear more &rarr;</a>
+            
+            <p class="pub-date">Published: {{ podcast['formatted_pubDate'] }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
 
 
 
